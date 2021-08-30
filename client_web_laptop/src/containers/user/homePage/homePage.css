@@ -1,0 +1,10 @@
+.item img {
+    display: inline-block;
+    margin : 1rem;
+    width: auto;
+    height: 40px;
+}
+
+#list-brand {
+    text-align: center;
+}
