@@ -6,27 +6,27 @@ import { signUp } from '../../../actions/accountAction';
 import ListBrand from '../../../components/brand/listBrand';
 
 class SignUpContent extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            openModal : false,
-            email : '',
-            name : '',
-            address : '',
-            phone : '',
-            gender : null,
-            password : '',
-            rePassword : '',
-            blankEmail : false,
-            blankName : false,
-            blankAddress : false,
-            blankPhone : false,
-            blankPassword : false,
-            validPassword : false,
-            blankRePassword : false,
-            validRePassword : false,
-            checkSignUp : false,
-            flagModal : false,// Bien de vong lap componentDidMount ko bi maxium loop
+            openModal: false,
+            email: '',
+            name: '',
+            address: '',
+            phone: '',
+            gender: null,
+            password: '',
+            rePassword: '',
+            blankEmail: false,
+            blankName: false,
+            blankAddress: false,
+            blankPhone: false,
+            blankPassword: false,
+            validPassword: false,
+            blankRePassword: false,
+            validRePassword: false,
+            checkSignUp: false,
+            flagModal: false,// Bien de vong lap componentDidMount ko bi maxium loop
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleCheckPassword = this.handleCheckPassword.bind(this);
@@ -36,81 +36,81 @@ class SignUpContent extends Component {
     }
     handleChange(input, e) {
         this.setState({
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         }, () => {
-            if(input === "email"){
+            if (input === "email") {
                 this.setState({
-                    blankEmail : this.state.email.length > 0 ? null : true
+                    blankEmail: this.state.email.length > 0 ? null : true
                 });
-            }else if(input === "name"){
+            } else if (input === "name") {
                 this.setState({
-                    blankName : this.state.name.length > 0 ? null : true
+                    blankName: this.state.name.length > 0 ? null : true
                 });
-            }else if(input === "address"){
+            } else if (input === "address") {
                 this.setState({
-                    blankAddress : this.state.address.length > 0 ? null : true
+                    blankAddress: this.state.address.length > 0 ? null : true
                 });
-            }else if(input === "phone"){
+            } else if (input === "phone") {
                 this.setState({
-                    phone : this.state.phone.length > 0 ? Number(this.state.phone) : '',
-                    blankPhone : this.state.phone.length > 0 ? null : true
+                    phone: this.state.phone.length > 0 ? Number(this.state.phone) : '',
+                    blankPhone: this.state.phone.length > 0 ? null : true
                 });
-            }else if(input === "password"){
+            } else if (input === "password") {
                 this.setState({
-                    blankPassword : this.state.password.length > 0 ? null : true,
-                    validPassword : this.state.password.length > 0 ? true : null
+                    blankPassword: this.state.password.length > 0 ? null : true,
+                    validPassword: this.state.password.length > 0 ? true : null
                 });
-            }else if(input === "gender"){
+            } else if (input === "gender") {
                 this.setState({
-                    gender : Number(this.state.gender)
+                    gender: Number(this.state.gender)
                 });
             }
         });
     }
     handleCheckPassword(e) {
         this.setState({
-            rePassword : e.target.value 
+            rePassword: e.target.value
         }, () => {
             this.setState({
-                blankRePassword : this.state.password !== this.state.rePassword ? true : null,
-                validRePassword : this.state.password === this.state.rePassword ? true : null
+                blankRePassword: this.state.password !== this.state.rePassword ? true : null,
+                validRePassword: this.state.password === this.state.rePassword ? true : null
             })
         });
     }
     checkSignUp() {
-        const {blankEmail, blankName, blankAddress, blankPhone, blankPassword, rePassword,
-            email, name, address, password, phone} = this.state;
-        if(blankEmail === false){
+        const { blankEmail, blankName, blankAddress, blankPhone, blankPassword, rePassword,
+            email, name, address, password, phone } = this.state;
+        if (blankEmail === false) {
             this.setState({
-                blankEmail : true
+                blankEmail: true
             });
         }
-        if(blankName === false){
+        if (blankName === false) {
             this.setState({
-                blankName : true
+                blankName: true
             })
         }
-        if(blankAddress === false){
+        if (blankAddress === false) {
             this.setState({
-                blankAddress : true
+                blankAddress: true
             })
         }
-        if(blankPhone === false){
+        if (blankPhone === false) {
             this.setState({
-                blankPhone : true
+                blankPhone: true
             })
         }
-        if(blankPassword === false){
+        if (blankPassword === false) {
             this.setState({
-                blankPassword : true
+                blankPassword: true
             })
         }
-        if(password !== rePassword){
+        if (password !== rePassword) {
             this.setState({
-                blankRePassword : true
+                blankRePassword: true
             })
         }
-        if( email.length > 0
+        if (email.length > 0
             &&
             name.length > 0
             &&
@@ -121,53 +121,55 @@ class SignUpContent extends Component {
             password.length > 0
             &&
             password === rePassword
-        ){
+        ) {
             this.setState({
-                checkSignUp : true
+                checkSignUp: true
             })
         }
     }
     async handleSignUp() {
         await this.checkSignUp();
-        if(this.state.checkSignUp){
+        if (this.state.checkSignUp) {
             const data = {
-                email : this.state.email,
-                name : this.state.name,
-                phone : this.state.phone,
-                gender : this.state.gender,
-                address : this.state.address,
-                password : this.state.password
+                email: this.state.email,
+                name: this.state.name,
+                phone: this.state.phone,
+                gender: this.state.gender,
+                address: this.state.address,
+                password: this.state.password
             }
             this.props.signUp(data);
             this.setState({
-                checkSignUp : false 
+                checkSignUp: false
             });
         }
-        if(this.state.flagModal === true){
+        if (this.state.flagModal === true) {
             this.setState({
-                flagModal : false
+                flagModal: false
             })
         }
+
     }
     componentDidUpdate() {
-        if(this.props.account.apiCallDone === true){
-            if(!this.state.flagModal){
+        if (this.props.account.apiCallDone === true) {
+            if (!this.state.flagModal) {
                 this.setState({
-                    openModal : true,
-                    flagModal : true
+                    openModal: true,
+                    flagModal: true
                 });
             }
         }
     }
     closeModal() {
         this.setState({
-            openModal : false
+            openModal: false
         })
+        this.props.history.push("/login");
     }
     render() {
         return (
             <div className="container-fluid">
-                <div className="signUp-content"  style={{backgroundColor : "#FFFFFF", border : "solid 1px #DDDDDD", padding : "1.5rem 1rem"}}>
+                <div className="signUp-content" style={{ backgroundColor: "#FFFFFF", border: "solid 1px #DDDDDD", padding: "1.5rem 1rem" }}>
                     <Row>
                         <Col sm="2">
                         </Col>
@@ -175,12 +177,12 @@ class SignUpContent extends Component {
                             <legend>Tạo tài khoản khách hàng cá nhân</legend>
                             <Form>
                                 <FormGroup row>
-                                    <Label sm="3">Email*</Label>
+                                    <Label sm="3">Email <span className="error-text">*</span></Label>
                                     <Col sm="9">
                                         <Input
                                             invalid={this.state.blankEmail}
                                             type="email"
-                                            name="email" 
+                                            name="email"
                                             onChange={(e) => this.handleChange(e.target.name, e)}
                                             value={this.state.email}
                                         />
@@ -188,11 +190,11 @@ class SignUpContent extends Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label sm="3">Tên*</Label>
+                                    <Label sm="3">Tên <span className="error-text">*</span></Label>
                                     <Col sm="9">
                                         <Input
                                             invalid={this.state.blankName}
-                                            type="text" 
+                                            type="text"
                                             name="name"
                                             onChange={(e) => this.handleChange(e.target.name, e)}
                                             value={this.state.name}
@@ -201,21 +203,21 @@ class SignUpContent extends Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label sm="3">Địa chỉ*</Label>
+                                    <Label sm="3">Địa chỉ <span className="error-text">*</span></Label>
                                     <Col sm="9">
                                         <Input
                                             invalid={this.state.blankAddress}
-                                            type="text" 
+                                            type="text"
                                             name="address"
                                             onChange={(e) => this.handleChange(e.target.name, e)}
                                             value={this.state.address}
                                         />
-                                         <FormFeedback>Địa chỉ không được để trống</FormFeedback>
+                                        <FormFeedback>Địa chỉ không được để trống</FormFeedback>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label sm="2">Số điện thoại* </Label>
-                                    <Label sm="1" style={{textAlign : "right"}}>+84</Label>
+                                    <Label sm="2">Số điện thoại <span className="error-text">*</span></Label>
+                                    <Label sm="1" style={{ textAlign: "right" }}>+84</Label>
                                     <Col sm="9">
                                         <Input
                                             invalid={this.state.blankPhone}
@@ -230,18 +232,18 @@ class SignUpContent extends Component {
                                 <FormGroup row>
                                     <Label sm="3">Giới tính</Label>
                                     <Col sm="9">
-                                        <Label style={{marginLeft: "0.3rem"}} sm="2">
+                                        <Label style={{ marginLeft: "0.3rem" }} sm="2">
                                             <Input
-                                                type="radio" 
+                                                type="radio"
                                                 name="gender"
                                                 onChange={(e) => this.handleChange(e.target.name, e)}
                                                 value="1"
                                             />
                                             {' '}Nam
                                         </Label>
-                                        <Label style={{marginLeft: "0.3rem"}} sm="2">
+                                        <Label style={{ marginLeft: "0.3rem" }} sm="2">
                                             <Input
-                                                type="radio" 
+                                                type="radio"
                                                 name="gender"
                                                 onChange={(e) => this.handleChange(e.target.name, e)}
                                                 value="0"
@@ -259,12 +261,12 @@ class SignUpContent extends Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label sm="3">Mật khẩu*</Label>
+                                    <Label sm="3">Mật khẩu <span className="error-text">*</span></Label>
                                     <Col sm="9">
                                         <Input
                                             valid={this.state.validPassword}
                                             invalid={this.state.blankPassword}
-                                            type="password" 
+                                            type="password"
                                             name="password"
                                             onChange={(e) => this.handleChange(e.target.name, e)}
                                             value={this.state.password}
@@ -273,12 +275,12 @@ class SignUpContent extends Component {
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
-                                    <Label sm="3">Nhập lại mật khẩu*</Label>
+                                    <Label sm="3">Nhập lại mật khẩu <span className="error-text">*</span></Label>
                                     <Col sm="9">
                                         <Input
                                             valid={this.state.validRePassword}
                                             invalid={this.state.blankRePassword}
-                                            type="password" 
+                                            type="password"
                                             name="rePassword"
                                             onChange={this.handleCheckPassword}
                                             value={this.state.rePassword}
@@ -290,10 +292,10 @@ class SignUpContent extends Component {
                                     <Col sm="3">
                                     </Col>
                                     <Col sm="9">
-                                        <Button style={{backgroundColor : "#43A892"}} onClick={this.handleSignUp}>Đăng ký</Button>
+                                        <Button style={{ backgroundColor: "#43A892" }} onClick={this.handleSignUp}>Đăng ký</Button>
                                     </Col>
                                 </Row>
-                                <Row style={{ marginTop : "1rem"}}>
+                                <Row style={{ marginTop: "1rem" }}>
                                     <Col sm="3">
                                     </Col>
                                     <Col sm="9">
@@ -313,19 +315,19 @@ class SignUpContent extends Component {
                         {this.props.account.success ? "Đăng ký tài khoản thành công" : "Email đã tồn tại. Vui lòng đăng ký lại"}
                     </ModalBody>
                     <ModalFooter>
-                        <Button style={{backgroundColor : "#43A892"}} onClick={this.closeModal}>Ok</Button>
+                        <Button style={{ backgroundColor: "#43A892" }} onClick={this.closeModal}>Ok</Button>
                     </ModalFooter>
                 </Modal>
             </div>
-            
+
         );
     }
 }
 const mapStateToProps = (state) => ({
-    account : state.account
+    account: state.account
 });
 const mapDispatchToProps = (dispatch) => ({
-    signUp : (data) => dispatch(signUp(data))
+    signUp: (data) => dispatch(signUp(data))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUpContent));

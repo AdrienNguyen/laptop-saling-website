@@ -42,3 +42,7 @@ body {
 }
 
 html { scroll-behavior: smooth; } 
+
+.error-text {
+  color: red;
+}

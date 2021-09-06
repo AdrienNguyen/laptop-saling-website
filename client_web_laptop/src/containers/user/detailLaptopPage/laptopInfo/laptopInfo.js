@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Row, Col, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './laptopInfo.css';
+import { addToCart } from '../../../../actions/cartAction';
+import { connect } from 'react-redux';
 
 class LaptopInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isStoreModal: false,
-            isSuperviorModal: false
+            isSuperviorModal: false,
+            openModalLoginSuggestion: false,
+            openModalAddToCart: false,
+
         }
+        this.handleAddToCart = this.handleAddToCart.bind(this);
+        this.closeModalAddToCart = this.closeModalAddToCart.bind(this);
+        this.closeModalLoginSuggestion = this.closeModalLoginSuggestion.bind(this)
         this.toggleStoreModal = this.toggleStoreModal.bind(this);
         this.toggleSuperviorModal = this.toggleSuperviorModal.bind(this);
         this.converPrice = this.converPrice.bind(this);
@@ -27,6 +36,57 @@ class LaptopInfo extends Component {
         price = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return price;
     }
+
+    // kiem tra xem laptop da co trong cart hay chua
+    checkCart(order, orderDetail) {
+        let result = false;
+        order.forEach(element => {
+            if (element.laptop.id === orderDetail.laptop.id) {
+                result = true
+            }
+        });
+        return result;
+    }
+
+    handleAddToCart() {
+        if (!localStorage.getItem('signined')) {
+            this.setState({
+                openModalLoginSuggestion: true
+            });
+        }
+        else {
+            this.setState({
+                openModalAddToCart: true
+            });
+            let oldOrder = JSON.parse(localStorage.getItem('order')) || [];
+            const laptop = this.props.laptop;
+            const orderDetail = {
+                laptop: laptop,
+                quantity: 1
+            }
+            if (this.checkCart(oldOrder, orderDetail) === false) {
+                oldOrder.push(orderDetail);
+                //stringiy de chuyen tu object sang Json... localstorage chi luu json 
+                // => mang object => mangjson duoc luu lai
+                localStorage.setItem('order', JSON.stringify(oldOrder));
+                this.props.addToCart(oldOrder.length + 1);
+            } else {
+                console.log("trong local co roi")
+            }
+        }
+    }
+
+    closeModalAddToCart() {
+        this.setState({
+            openModalAddToCart: false,
+        });
+    }
+    closeModalLoginSuggestion() {
+        this.setState({
+            openModalLoginSuggestion: false
+        });
+    }
+
     render() {
         const laptop = this.props.laptop;
         const images = laptop.images;
@@ -93,7 +153,7 @@ class LaptopInfo extends Component {
                             </div>
                             <div className="cart-button">
                                 <Button color="danger">Mua ngay</Button>{' '}
-                                <Button style={{ backgroundColor: "#43A892" }}>Thêm vào giỏ</Button>
+                                <Button style={{ backgroundColor: "#43A892" }} onClick={this.handleAddToCart}>Thêm vào giỏ</Button>
                             </div>
                             <div className="advertisement" style={{ paddingTop: "6rem" }}>
                                 <div className="line" style={{ borderTop: "solid 1px #ddd", paddingTop: "1rem" }}></div>
@@ -191,9 +251,27 @@ class LaptopInfo extends Component {
                         <p>Camera nhà thông minh (Nhánh phụ 1)</p>
                     </ModalBody>
                 </Modal>
+                <Modal isOpen={this.state.openModalAddToCart} toggle={this.closeModalAddToCart}>
+                    <ModalBody>Đã thêm vào giỏ hàng</ModalBody>
+                    <ModalFooter>
+                        <Button style={{ backgroundColor: "#43A892" }}><Link to="/cart" style={{ color: "#FFFFFF", textDecoration: "none" }}>Giỏ hàng</Link></Button>
+                        <Button style={{ backgroundColor: "#43A892" }} onClick={this.closeModalAddToCart}>OK</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal isOpen={this.state.openModalLoginSuggestion} toggle={this.closeModalLoginSuggestion}>
+                    <ModalBody>Bạn cần đăng nhập để  mua hàng!!!</ModalBody>
+                    <ModalFooter>
+                        <Button style={{ backgroundColor: "#43A892" }}><Link to="/login" style={{ color: "#FFFFFF", textDecoration: "none" }}>Đăng nhập</Link></Button>
+                        <Button onClick={this.closeModalLoginSuggestion}>Hủy</Button>
+                    </ModalFooter>
+                </Modal>
             </div>
         );
     }
 }
 
-export default LaptopInfo;
+const mapDispatchToProps = (dispatch) => ({
+    addToCart: (quantity) => dispatch(addToCart(quantity))
+});
+
+export default connect(null, mapDispatchToProps)(LaptopInfo);
