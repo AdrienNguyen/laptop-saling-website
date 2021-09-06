@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "pjtjamj",
+    "password": "1234",
     "database": "pp_web_laptop",
     "host": "127.0.0.1",
     "dialect": "mysql",
@@ -23,5 +23,5 @@
     "dialect": "mysql",
     "operatorsAliases": false
   },
-  "secret" : "nguyenanhphuong"
+  "secret": "nguyenanhphuong"
 }
