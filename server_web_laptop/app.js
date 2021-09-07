@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var passport = require('./middleware/passport');
 var session = require('express-session');
 var api = require('./routes/api');
-var db = require('./models'); 
+var db = require('./models');
 
 var app = express();
 
@@ -43,19 +43,19 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
-app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); 
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 
 api(app);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -65,9 +65,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-db.sequelize.sync().then(function(){
+db.sequelize.sync().then(function () {
   app.listen(5000, () => {
-    console.log("Server is running at localhost:5000");
+    console.log("Server is opened at localhost:5000");
   })
 })
 
