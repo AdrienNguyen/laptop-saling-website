@@ -66,7 +66,7 @@ app.use(function (err, req, res, next) {
 });
 
 db.sequelize.sync().then(function () {
-  app.listen(5000, () => {
+  app.listen(process.env.PORT || 5000, () => {
     console.log("Server is opened at localhost:5000");
   })
 })
